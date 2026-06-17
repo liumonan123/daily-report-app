@@ -1,0 +1,9 @@
+{
+  "name": "daily-report-app",
+  "version": "1.2",
+  "description": "日报与周报管理工具",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,26 @@
+﻿,
+  'GET /api/weekly-text': (req, res, parsed) => {
+    var ss=parsed.query.start||'',es=parsed.query.end||'';
+    if(!ss||!es)return sendJSON(res,{error:'need start and end'},400);
+    var wd=[];var bd={};var cur=new Date(ss);var endD=new Date(es);
+    while(cur<=endD){var ds=formatDate(cur);wd.push(ds);bd[ds]=readRecords(ds);cur.setDate(cur.getDate()+1);}
+    var sw={'已完成':1,'部分完成':0};
+    var gp={};
+    wd.forEach(function(ds){(bd[ds]||[]).forEach(function(r){
+      var k=r.summary||r.category||'(未分类)';
+      if(!gp[k])gp[k]={hours:0,statuses:new Set()};
+      gp[k].hours+=r.hours;if(r.status)gp[k].statuses.add(r.status);
+    });});
+    var it=Object.entries(gp).map(function(e){
+      var k=e[0];var d=e[1];var st=[...d.statuses];var best='';
+      st.forEach(function(s){if(!best||(sw[s]||0)>(sw[best]||0))best=s;});
+      return{summary:k,status:best,hours:Math.round(d.hours*100)/100};
+    }).sort(function(a,b){return b.hours-a.hours;});
+    var total=it.reduce(function(s,i){return s+i.hours;},0);
+    var dt=new Date(ss);
+    var label=(dt.getMonth()+1)+'月第'+getWeekNumber(dt)+'周周报';
+    var text=label+'\n\n';
+    it.forEach(function(item,i){text+=(i+1)+'. '+item.summary+' - '+item.status+' - '+item.hours+'h\n';});
+    text+='\n总计: '+Math.round(total*100)/100+'h';
+    sendJSON(res,{text:text,items:it,total:Math.round(total*100)/100});
+  }

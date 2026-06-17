@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日报与周报管理</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="titlebar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="window-controls">
+      <span class="window-dot close"></span>
+      <span class="window-dot minimize"></span>
+      <span class="window-dot maximize"></span>
+    </div>
+    <span class="titlebar-title">工作管理</span>
+  </div>
+  <span class="titlebar-date" id="headerDate"></span>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="entry">日报填写</button>
+  <button class="tab-btn" data-tab="daily">日报统计</button>
+  <button class="tab-btn" data-tab="weekly">周报统计</button>
+    <button class="tab-btn" data-tab="text">文字周报</button>
+  <button class="tab-btn" data-tab="settings" style="margin-left:auto;color:var(--text-tertiary)">设置</button>
+</div>
+
+<div class="main-container">
+
+  <!-- ===== 日报填写 ===== -->
+  <div id="view-entry" class="tab-content active" style="display:block">
+    <div class="card">
+      <div class="date-nav">
+        <button id="entryPrevDay">&larr;</button>
+        <input type="date" id="entryDate">
+        <button id="entryNextDay">&rarr;</button>
+        <button class="btn btn-secondary" id="entryToday">今天</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">添加记录</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:0 0 130px">
+          <label>开始时间</label>
+          <input type="time" id="inputStart" value="08:30" step="60">
+        </div>
+        <div class="form-group" style="flex:0 0 130px">
+          <label>结束时间</label>
+          <input type="time" id="inputEnd" value="09:00" step="60">
+        </div>
+        <div class="form-group" style="flex:0 0 100px">
+          <label>用时 <span style="font-weight:400;color:var(--text-tertiary)">自动</span></label>
+          <div id="inputHoursDisplay" style="padding:8px 12px;background:var(--bg-primary);border-radius:6px;font-size:15px;font-weight:600;color:var(--accent);line-height:1.4">0.5 h</div>
+        </div>
+        <div class="form-group" style="flex:1 1 150px;min-width:120px">
+          <label>工作项目</label>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="inputProject" list="projectList" placeholder="输入或选择" style="flex:1;min-width:0">
+            <button class="btn-icon" id="btnAddProject" title="添加为新项目" style="flex:0 0 34px;font-size:16px;padding:4px 8px">+</button>
+          </div>
+          <datalist id="projectList"></datalist>
+        </div>
+        <div class="form-group" style="flex:1 1 150px;min-width:120px">
+          <label>工作分类</label>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="inputCategory" list="categoryList" placeholder="输入或选择" style="flex:1;min-width:0">
+            <button class="btn-icon" id="btnAddCategory" title="添加为新分类" style="flex:0 0 34px;font-size:16px;padding:4px 8px">+</button>
+          </div>
+          <datalist id="categoryList"></datalist>
+        
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>项目概括</label>
+          <input type="text" id="inputSummary" list="summaryList" placeholder="如: 开发BI报表、纸重计算器...">
+          <datalist id="summaryList"></datalist>
+        </div></div>
+        <div class="form-group" style="flex:0 0 120px">
+          <label>进展情况</label>
+          <select id="inputStatus">
+            <option value="已完成">已完成</option>
+            <option value="开展中">开展中</option>
+            <option value="部分完成">部分完成</option>
+            <option value="未完成">未完成</option>
+            <option value="暂停">暂停</option>
+            <option value="取消">取消</option>
+          </select>
+        </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>工作内容</label>
+          <textarea id="inputContent" rows="2" placeholder="描述具体做了什么..."></textarea>
+        </div>
+        <div class="form-group" style="flex:0 0 200px">
+          <label>备注 / 问题</label>
+          <textarea id="inputNote" rows="2" placeholder="遇到的问题..."></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button class="btn btn-primary" id="btnAddRecord">+ 添加记录</button><button class="btn btn-primary" id="btnModifyRecord" style="display:none">✔ 修改记录</button><button class="btn btn-secondary" id="btnCancelEdit" style="display:none">✖ 取消</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">今日记录</span>
+        <span id="entryCount" style="font-size:12px;color:var(--text-secondary)"></span>
+      </div>
+      <div id="entryRecordList" class="record-list"></div>
+    </div>
+  </div>
+
+  <!-- ===== 日报统计 ===== -->
+  <div id="view-daily" class="tab-content">
+    <div class="card">
+      <div class="date-nav">
+        <button id="dailyPrevDay">&larr;</button>
+        <input type="date" id="dailyDate">
+        <button id="dailyNextDay">&rarr;</button>
+        <button class="btn btn-secondary" id="dailyToday">今天</button>
+      </div>
+      <div id="dailySummary">
+        <div class="empty-state"><div class="icon">&#128203;</div><p>选择日期查看日报统计</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 周报统计 ===== -->
+  <div id="view-weekly" class="tab-content">
+    <div class="card">
+      <div class="date-nav">
+        <button id="weeklyPrev">&larr;</button>
+        <span class="week-label" id="weekLabel">选择周次</span>
+        <button id="weeklyNext">&rarr;</button>
+        <button class="btn btn-secondary" id="weeklyThisWeek">本周</button>
+        <button class="btn btn-secondary" id="weeklyLastWeek">上周</button>
+      </div>
+      <div id="weeklySummary">
+        <div class="empty-state"><div class="icon">&#128202;</div><p>选择周次查看周报统计</p></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ===== 文字周报 ===== -->
+  <div id="view-text" class="tab-content">
+    <div class="card">
+      <div class="date-nav">
+        <button id="textPrev">&larr;</button>
+        <span class="week-label" id="textLabel">选择周次</span>
+        <button id="textNext">&rarr;</button>
+        <button class="btn btn-secondary" id="textThisWeek">本周</button>
+        <button class="btn btn-secondary" id="textLastWeek">上周</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;justify-content:flex-end">
+        <button class="btn btn-secondary" id="btnCopyText">复制</button>
+      </div>
+      <textarea id="textContent" style="width:100%;min-height:300px;padding:16px;border:1px solid var(--border);border-radius:8px;font-family:'Microsoft YaHei','微软雅黑',sans-serif;font-size:14px;line-height:1.8;background:var(--bg-primary);color:var(--text-primary);resize:vertical;outline:none" placeholder="选择周次查看周报"></textarea>
+    </div>
+  </div>
+  <!-- ===== 设置 ===== -->
+  <div id="view-settings" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">推送设置</span>
+      </div>
+      <div class="alert-info">
+        <strong>每天早上 8:30</strong> 将昨天的日报推送到微信。
+        你需要先注册一个推送服务：
+        <ol style="margin:8px 0 0 20px">
+          <li>打开 <a href="https://sct.ftqq.com" target="_blank" style="color:#0071e3">sct.ftqq.com</a> 用微信扫码登录</li>
+          <li>复制你的 SendKey（形如 SCT123456...）</li>
+          <li>粘贴到下方输入框，保存并测试</li>
+        </ol>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>推送通道</label>
+          <select id="pushChannel">
+            <option value="serverchan">Server酱（推荐·个人微信）</option>
+            <option value="wecom">企业微信群机器人</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="serverchanConfig">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Server酱 SendKey</label>
+            <input type="text" id="pushServerchanKey" placeholder="SCT123456... 从 sct.ftqq.com 获取">
+          </div>
+        </div>
+      </div>
+
+      <div id="wecomConfig" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label>企微机器人 Webhook URL</label>
+            <input type="text" id="pushWecomWebhook" placeholder="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=...">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row" style="align-items:center">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px">
+          <input type="checkbox" id="pushEnabled"> 启用每日自动推送
+        </label>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-primary" id="btnSavePush">保存设置</button>
+        <button class="btn btn-secondary" id="btnTestPush">发送测试</button>
+        <span id="pushStatus" style="font-size:12px;color:var(--text-secondary);align-self:center;margin-left:8px"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">定时任务</span>
+      </div>
+           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">
+        配置推送并保存后，以管理员身份打开 PowerShell，依次执行以下两条命令：
+      </p>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text-secondary);font-weight:600;letter-spacing:0.5px;text-transform:uppercase">日报推送（每天 8:30）</div>
+      <div style="background:#0a0a0a;color:#e0e0e0;padding:14px;border-radius:8px;font-size:12px;font-family:Consolas,monospace;white-space:pre-wrap;line-height:1.5;border:1px solid var(--border);margin-bottom:16px" id="schedulerCommandDaily">正在加载...</div>
+
+      <div style="margin-bottom:8px;font-size:11px;color:var(--text-secondary);font-weight:600;letter-spacing:0.5px;text-transform:uppercase">周报推送（每周一 9:00）</div>
+      <div style="background:#0a0a0a;color:#e0e0e0;padding:14px;border-radius:8px;font-size:12px;font-family:Consolas,monospace;white-space:pre-wrap;line-height:1.5;border:1px solid var(--border)" id="schedulerCommandWeekly">正在加载...</div>
+
+      <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">
+        每条命令只需执行一次，Windows 定时任务会在指定时间自动运行。如需更新，先删除旧任务再重新创建。
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">关于</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+        日报与周报管理工具 v1.2<br>
+        数据存储: D:\ReportData<br>
+        零依赖 · 纯本地运行
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
