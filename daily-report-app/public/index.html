@@ -4,34 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日报与周报管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="titlebar">
-  <div style="display:flex;align-items:center;gap:12px">
-    <div class="window-controls">
-      <span class="window-dot close"></span>
-      <span class="window-dot minimize"></span>
-      <span class="window-dot maximize"></span>
-    </div>
-    <span class="titlebar-title">工作管理</span>
+<section class="hero-section">
+
+<video class="bg-video" autoplay loop muted playsinline>
+  <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260604_125109_19424216-4e2a-4560-b9f2-f1b5f6eb2c2e.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
+<nav class="pill-navbar">
+  <div class="pill-nav-left">
+    <svg class="brand-logo" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" fill="white"/>
+    </svg>
+    <span class="brand-text">LMN</span>
   </div>
-  <span class="titlebar-date" id="headerDate"></span>
+  <div class="pill-nav-center">
+    <button class="pill-tab-btn tab-btn active" data-tab="entry">日报填写</button>
+    <button class="pill-tab-btn tab-btn" data-tab="daily">日报统计</button>
+    <button class="pill-tab-btn tab-btn" data-tab="weekly">周报统计</button>
+    <button class="pill-tab-btn tab-btn" data-tab="text">文字周报</button>
+    <button class="pill-tab-btn tab-btn" data-tab="settings">设置</button>
+  </div>
+  <div class="pill-nav-right">
+    <span class="pill-date" id="headerDate"></span>
+  </div>
+</nav>
+
+<div class="hero-text-block">
+  <h1 class="hero-title hero-t1">protect</h1>
+  <h1 class="hero-title hero-t2">your</h1>
+  <h1 class="hero-title hero-t3">data</h1>
+  <p class="hero-desc">日报管理工具</p>
 </div>
 
-<div class="tab-bar">
-  <button class="tab-btn active" data-tab="entry">日报填写</button>
-  <button class="tab-btn" data-tab="daily">日报统计</button>
-  <button class="tab-btn" data-tab="weekly">周报统计</button>
-    <button class="tab-btn" data-tab="text">文字周报</button>
-  <button class="tab-btn" data-tab="settings" style="margin-left:auto;color:var(--text-tertiary)">设置</button>
-</div>
+<div class="app-panel">
 
-<div class="main-container">
+  <div class="mobile-panel-tabs">
+    <button class="pill-tab-btn tab-btn active" data-tab="entry">日报填写</button>
+    <button class="pill-tab-btn tab-btn" data-tab="daily">日报统计</button>
+    <button class="pill-tab-btn tab-btn" data-tab="weekly">周报统计</button>
+    <button class="pill-tab-btn tab-btn" data-tab="text">文字周报</button>
+    <button class="pill-tab-btn tab-btn" data-tab="settings">设置</button>
+  </div>
 
-  <!-- ===== 日报填写 ===== -->
-  <div id="view-entry" class="tab-content active" style="display:block">
+  <div id="view-entry" class="tab-content active">
     <div class="card">
       <div class="date-nav">
         <button id="entryPrevDay">&larr;</button>
@@ -40,7 +63,6 @@
         <button class="btn btn-secondary" id="entryToday">今天</button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-title">添加记录</span>
@@ -73,13 +95,12 @@
             <button class="btn-icon" id="btnAddCategory" title="添加为新分类" style="flex:0 0 34px;font-size:16px;padding:4px 8px">+</button>
           </div>
           <datalist id="categoryList"></datalist>
-        
         </div>
         <div class="form-group" style="flex:1">
           <label>项目概括</label>
-          <input type="text" id="inputSummary" list="summaryList" placeholder="如: 开发BI报表、纸重计算器...">
+          <input type="text" id="inputSummary" list="summaryList" placeholder="如: 开发UI报表、纸重计算器...">
           <datalist id="summaryList"></datalist>
-        </div></div>
+        </div>
         <div class="form-group" style="flex:0 0 120px">
           <label>进展情况</label>
           <select id="inputStatus">
@@ -91,6 +112,7 @@
             <option value="取消">取消</option>
           </select>
         </div>
+      </div>
       <div class="form-row">
         <div class="form-group">
           <label>工作内容</label>
@@ -102,10 +124,11 @@
         </div>
       </div>
       <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
-        <button class="btn btn-primary" id="btnAddRecord">+ 添加记录</button><button class="btn btn-primary" id="btnModifyRecord" style="display:none">✔ 修改记录</button><button class="btn btn-secondary" id="btnCancelEdit" style="display:none">✖ 取消</button>
+        <button class="btn btn-primary" id="btnAddRecord">+ 添加记录</button>
+        <button class="btn btn-primary" id="btnModifyRecord" style="display:none">✏️ 修改记录</button>
+        <button class="btn btn-secondary" id="btnCancelEdit" style="display:none">✏️ 取消</button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-title">今日记录</span>
@@ -115,7 +138,6 @@
     </div>
   </div>
 
-  <!-- ===== 日报统计 ===== -->
   <div id="view-daily" class="tab-content">
     <div class="card">
       <div class="date-nav">
@@ -125,12 +147,11 @@
         <button class="btn btn-secondary" id="dailyToday">今天</button>
       </div>
       <div id="dailySummary">
-        <div class="empty-state"><div class="icon">&#128203;</div><p>选择日期查看日报统计</p></div>
+        <div class="empty-state"><div class="icon">📋</div><p>选择日期查看日报统计</p></div>
       </div>
     </div>
   </div>
 
-  <!-- ===== 周报统计 ===== -->
   <div id="view-weekly" class="tab-content">
     <div class="card">
       <div class="date-nav">
@@ -141,13 +162,11 @@
         <button class="btn btn-secondary" id="weeklyLastWeek">上周</button>
       </div>
       <div id="weeklySummary">
-        <div class="empty-state"><div class="icon">&#128202;</div><p>选择周次查看周报统计</p></div>
+        <div class="empty-state"><div class="icon">📊</div><p>选择周次查看周报统计</p></div>
       </div>
     </div>
   </div>
 
-  
-  <!-- ===== 文字周报 ===== -->
   <div id="view-text" class="tab-content">
     <div class="card">
       <div class="date-nav">
@@ -160,10 +179,10 @@
       <div style="display:flex;gap:8px;margin-bottom:8px;justify-content:flex-end">
         <button class="btn btn-secondary" id="btnCopyText">复制</button>
       </div>
-      <textarea id="textContent" style="width:100%;min-height:300px;padding:16px;border:1px solid var(--border);border-radius:8px;font-family:'Microsoft YaHei','微软雅黑',sans-serif;font-size:14px;line-height:1.8;background:var(--bg-primary);color:var(--text-primary);resize:vertical;outline:none" placeholder="选择周次查看周报"></textarea>
+      <textarea id="textContent" style="width:100%;min-height:300px;padding:16px;border:1px solid var(--border);border-radius:8px;font-family:'Readex Pro','Microsoft YaHei','微软雅黑',sans-serif;font-size:14px;line-height:1.8;background:var(--bg-primary);color:var(--text-primary);resize:vertical;outline:none" placeholder="选择周次查看周报"></textarea>
     </div>
   </div>
-  <!-- ===== 设置 ===== -->
+
   <div id="view-settings" class="tab-content">
     <div class="card">
       <div class="card-header">
@@ -178,7 +197,6 @@
           <li>粘贴到下方输入框，保存并测试</li>
         </ol>
       </div>
-
       <div class="form-row">
         <div class="form-group">
           <label>推送通道</label>
@@ -188,7 +206,6 @@
           </select>
         </div>
       </div>
-
       <div id="serverchanConfig">
         <div class="form-row">
           <div class="form-group">
@@ -197,7 +214,6 @@
           </div>
         </div>
       </div>
-
       <div id="wecomConfig" style="display:none">
         <div class="form-row">
           <div class="form-group">
@@ -206,52 +222,48 @@
           </div>
         </div>
       </div>
-
       <div class="form-row" style="align-items:center">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px">
           <input type="checkbox" id="pushEnabled"> 启用每日自动推送
         </label>
       </div>
-
       <div style="display:flex;gap:8px;margin-top:12px">
         <button class="btn btn-primary" id="btnSavePush">保存设置</button>
         <button class="btn btn-secondary" id="btnTestPush">发送测试</button>
         <span id="pushStatus" style="font-size:12px;color:var(--text-secondary);align-self:center;margin-left:8px"></span>
       </div>
     </div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-title">定时任务</span>
       </div>
-           <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">
         配置推送并保存后，以管理员身份打开 PowerShell，依次执行以下两条命令：
       </p>
-
       <div style="margin-bottom:8px;font-size:11px;color:var(--text-secondary);font-weight:600;letter-spacing:0.5px;text-transform:uppercase">日报推送（每天 8:30）</div>
       <div style="background:#0a0a0a;color:#e0e0e0;padding:14px;border-radius:8px;font-size:12px;font-family:Consolas,monospace;white-space:pre-wrap;line-height:1.5;border:1px solid var(--border);margin-bottom:16px" id="schedulerCommandDaily">正在加载...</div>
-
       <div style="margin-bottom:8px;font-size:11px;color:var(--text-secondary);font-weight:600;letter-spacing:0.5px;text-transform:uppercase">周报推送（每周一 9:00）</div>
       <div style="background:#0a0a0a;color:#e0e0e0;padding:14px;border-radius:8px;font-size:12px;font-family:Consolas,monospace;white-space:pre-wrap;line-height:1.5;border:1px solid var(--border)" id="schedulerCommandWeekly">正在加载...</div>
-
       <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">
         每条命令只需执行一次，Windows 定时任务会在指定时间自动运行。如需更新，先删除旧任务再重新创建。
       </p>
     </div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-title">关于</span>
       </div>
       <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">
         日报与周报管理工具 v1.2<br>
-        数据存储: D:\ReportData<br>
+        数据存储: D:ReportData<br>
         零依赖 · 纯本地运行
       </p>
     </div>
   </div>
 
 </div>
+
+<div class="bottom-gradient"></div>
+</section>
 
 <script src="js/app.js"></script>
 <script src="js/settings.js"></script>
