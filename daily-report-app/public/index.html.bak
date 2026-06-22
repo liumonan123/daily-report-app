@@ -1,9 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日报与周报管理</title>
+
+
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -175,7 +181,7 @@
       <div style="display:flex;gap:8px;margin-bottom:8px;justify-content:flex-end">
         <button class="btn btn-secondary" id="btnCopyText">复制</button>
       </div>
-      <textarea id="textContent" style="width:100%;min-height:300px;padding:16px;border:1px solid var(--border);border-radius:8px;font-family:'Microsoft YaHei','微软雅黑',sans-serif;font-size:14px;line-height:1.8;background:var(--bg-primary);color:var(--text-primary);resize:vertical;outline:none" placeholder="选择周次查看周报"></textarea>
+      <textarea id="textContent" style="width:100%;min-height:300px;padding:16px;border:1px solid var(--border);border-radius:8px;font-family:'Readex Pro','Microsoft YaHei','微软雅黑',sans-serif;font-size:14px;line-height:1.8;background:var(--bg-primary);color:var(--text-primary);resize:vertical;outline:none" placeholder="选择周次查看周报"></textarea>
     </div>
   </div>
 
@@ -250,7 +256,7 @@
       </div>
       <p style="font-size:13px;color:var(--text-secondary);line-height:1.6">
         日报与周报管理工具 v1.3<br>
-        数据存储: D:ReportData<br>
+        数据存储: D:/ReportData<br>
         零依赖 · 纯本地运行
       </p>
     </div>
